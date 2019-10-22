@@ -1,0 +1,66 @@
+.table-block {
+  .c-table {
+    padding: 20px;
+
+    .c-head, .c-row {
+      display: flex;
+
+      .c-cell, .ch {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        word-break: break-word;
+        padding: 0 5px;
+
+        input[type="checkbox"] {
+          width: 20px;
+          height: 20px;
+        }
+      }
+
+      .c-1 {
+        width: 5%;
+      }
+
+      .c-2 {
+        width: 20%;
+      }
+
+      .c-3 {
+        width: 20%;
+      }
+
+      .c-4 {
+        width: 35%;
+      }
+
+      .c-5 {
+        width: 20%;
+      }
+    }
+
+    .c-head {
+      height: 40px;
+      background: lightgray;
+    }
+
+    .c-row {
+      min-height: 40px;
+      border-bottom: 1px solid lightgray;
+
+      .c-cell {
+        input[type="checkbox"] {
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+  }
+}
+
+.pagination-block {
+  display: flex;
+  justify-content: flex-end;
+  height: 75px;
+  padding: 20px 20px 0 0;
+}

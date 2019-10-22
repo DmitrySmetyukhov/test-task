@@ -1,0 +1,25 @@
+<form class="search-panel" [formGroup]="form">
+
+  <div class="form-group">
+    <ng-select
+      [items]="searchItems"
+      bindLabel="name"
+      bindValue="id"
+      formControlName="searchVariant"
+      class="search-select"
+      [clearable]="false"
+    ></ng-select>
+  </div>
+
+  <div class="form-group">
+    <input class="search-input"
+           formControlName="query"
+           placeholder="Search"
+    />
+  </div>
+
+  <button class="btn btn-secondary" (click)="onSearch()">
+    <span>Search</span>
+  </button>
+
+</form>

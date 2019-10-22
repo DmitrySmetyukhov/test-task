@@ -1,0 +1,41 @@
+<div class="pagination-block">
+  <pagination *ngIf="total > limit"
+              [(ngModel)]="currentPage"
+              [totalItems]="total"
+              [maxSize]="15"
+              [boundaryLinks]="true"
+              firstText="<<"
+              previousText="<"
+              nextText=">"
+              lastText=">>"
+              (pageChanged)="onPagination($event)"
+  ></pagination>
+</div>
+
+<div class="table-block" *ngIf="total">
+  <div class="c-table">
+    <div class="c-head">
+      <div class="ch c-1">Select</div>
+      <div class="ch c-2">Full Name</div>
+      <div class="ch c-3">Language</div>
+      <div class="ch c-4">Description</div>
+      <div class="ch c-5">Url</div>
+    </div>
+    <div class="c-body">
+      <div class="c-row" *ngFor="let item of repositoryItems">
+        <div class="c-cell c-1">
+          <input type="checkbox"
+                 [(ngModel)]="item.checked"
+                 (ngModelChange)="onItemCheckBoxCheck(item)"
+          />
+        </div>
+        <div class="c-cell c-2">{{item.fullName}}</div>
+        <div class="c-cell c-3">{{item.language}}</div>
+        <div class="c-cell c-4">{{item.description}}</div>
+        <div class="c-cell c-5">
+          <a [href]="item.url" target="_blank">{{item.url}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

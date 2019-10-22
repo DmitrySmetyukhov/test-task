@@ -1,0 +1,29 @@
+.search-panel {
+  display: flex;
+  justify-content: flex-end;
+  padding: 15px 20px 0 0;
+
+  ng-select.search-select {
+    width: 200px;
+  }
+
+  input.search-input {
+    width: 250px;
+    padding: 0 10px;
+    font: 400 13.3333px Arial;
+    border-radius: 5px;
+    height: 36px;
+    margin: 0 10px;
+    border: 1px solid #d9d9d9;
+  }
+
+  button {
+    display: flex;
+    height: 35px;
+    align-items: center;
+    margin-left: 20px;
+    padding: 0 0 3px 0;
+    width: 100px;
+    justify-content: center;
+  }
+}

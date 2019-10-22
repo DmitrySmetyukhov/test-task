@@ -1,0 +1,11 @@
+<app-search-panel
+  (onSearch)="search($event)"
+></app-search-panel>
+<app-results-table
+  [repositoryItems]="repositoryItems"
+  [total]="total"
+  [limit]="limit"
+  [page]="page"
+  (onPagination)="onPagination($event)"
+  (onItemCheckBoxCheck)="onItemCheckBoxCheck($event)"
+></app-results-table>
