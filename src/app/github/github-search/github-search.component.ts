@@ -3,6 +3,7 @@ import {SearchPanelDto, RepositoryItem, SearchVariants} from '../models/interfac
 import {GithubApiService} from '../providers/github.api.service';
 import {map} from 'rxjs/operators';
 import {Observable} from 'rxjs';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-github-search',
@@ -12,13 +13,13 @@ import {Observable} from 'rxjs';
 export class GithubSearchComponent implements OnInit {
   public repositoryItems: RepositoryItem[] = [];
   public total = 0;
-  private limit = 10;
+  private limit = 15;
   private page = 1;
   private searchState: SearchPanelDto;
   private availableResultsNumber = 1000;  // "Only the first 1000 search results are available", "documentation_url": "https://developer.github.com/v3/search/"
   private selectedItems: RepositoryItem[] = [];
 
-  constructor(private githubApi: GithubApiService) {
+  constructor(private githubApi: GithubApiService, private toastr: ToastrService) {
 
   }
 
@@ -100,6 +101,7 @@ export class GithubSearchComponent implements OnInit {
       }))
       .subscribe((response: any) => {
         this.repositoryItems = this.convertItems(response.items);
+        this.toastr.success('Success!');
       });
   }
 

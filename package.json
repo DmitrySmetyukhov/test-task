@@ -11,7 +11,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^6.1.0",
+    "@angular/animations": "^6.1.10",
     "@angular/common": "^6.1.0",
     "@angular/compiler": "^6.1.0",
     "@angular/core": "^6.1.0",
@@ -24,7 +24,9 @@
     "bootstrap": "^4.3.1",
     "core-js": "^2.5.4",
     "ngx-bootstrap": "2.0.2",
-    "rxjs": "^5.6.0-forward-compat.4",
+    "ngx-toastr": "8.7.3",
+    "rxjs": "6.3.3",
+    "rxjs-compat": "6.2.1",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {
