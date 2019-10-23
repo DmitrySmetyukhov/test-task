@@ -14,13 +14,13 @@ import {AppConstants} from '../../shared/app-constants';
 })
 export class GithubSearchComponent implements OnInit {
   public repositoryItems: RepositoryItem[] = [];
+  public selectedItems: RepositoryItem[] = [];
   public total = 0;
   public searchState: SearchPanelDto;
   public limit = AppConstants.GIT_SEARCH_LIMIT;
   public page = 1;
   private availableResultsNumber = AppConstants.GIT_AVAILABLE_RESULTS_NUMBER;  // "Only the first 1000 search results are available", "documentation_url": "https://developer.github.com/v3/search/"
-  private selectedItems: RepositoryItem[] = [];
-  private initializationComplete: boolean;
+  private pending: boolean;
   private state: GithubModuleState = <GithubModuleState>{};
 
   constructor(
@@ -56,7 +56,7 @@ export class GithubSearchComponent implements OnInit {
   }
 
   public onPagination(page: number) {
-    if (!this.initializationComplete) {
+    if (this.pending) {
       return;
     }
     this.page = page;
@@ -74,12 +74,21 @@ export class GithubSearchComponent implements OnInit {
     this.store.setState(this.state);
   }
 
+  public removeSelectedItem(item: RepositoryItem) {
+    const itemInResultsList = this.repositoryItems.find(i => i.id === item.id);
+    this.selectedItems = this.selectedItems.filter(i => i.id !== item.id);
+    if (itemInResultsList) {
+      itemInResultsList.checked = false;
+    }
+  }
 
   private findByLanguage(language: string, limit: number, page: number) {
+    this.pending = true;
     this.responseObserver(this.githubApi.findByLanguage(language, limit, page));
   }
 
   private findByTopic(language: string, limit: number, page: number) {
+    this.pending = true;
     this.responseObserver(this.githubApi.findByTopic(language, limit, page));
   }
 
@@ -135,6 +144,7 @@ export class GithubSearchComponent implements OnInit {
         };
 
         this.store.setState(this.state);
+        this.pending = false;
       });
   }
 
@@ -154,7 +164,7 @@ export class GithubSearchComponent implements OnInit {
     }
 
     setTimeout(() => {
-      this.initializationComplete = true;
+      this.pending = false;
     });
   }
 }

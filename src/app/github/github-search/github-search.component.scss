@@ -1,0 +1,20 @@
+.selected-items-block {
+  margin: 20px;
+  font-size: 14px;
+  max-height: 200px;
+  overflow-y: auto;
+
+  .title {
+    font-size: 20px;
+  }
+
+  .selected-item {
+    span {
+      margin-right: 20px;
+
+      &.glyphicon-trash {
+        cursor: pointer;
+      }
+    }
+  }
+}

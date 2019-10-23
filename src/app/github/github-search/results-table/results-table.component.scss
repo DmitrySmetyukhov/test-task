@@ -1,6 +1,7 @@
 .table-block {
   .c-table {
     padding: 0 20px;
+    font-size: 16px;
 
     .c-head, .c-row {
       display: flex;
@@ -63,4 +64,8 @@
   justify-content: flex-end;
   height: 75px;
   padding: 20px 20px 0 0;
+}
+
+:host ::ng-deep pagination {
+  font-size: 16px;
 }

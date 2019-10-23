@@ -2,6 +2,7 @@
   display: flex;
   justify-content: flex-end;
   padding: 15px 20px 0 0;
+  font-size: 16px;
 
   ng-select.search-select {
     width: 200px;
@@ -19,11 +20,12 @@
 
   button {
     display: flex;
-    height: 35px;
+    justify-content: center;
     align-items: center;
+    height: 35px;
+    width: 100px;
     margin-left: 20px;
     padding: 0 0 3px 0;
-    width: 100px;
-    justify-content: center;
+    font-size: 16px;
   }
 }

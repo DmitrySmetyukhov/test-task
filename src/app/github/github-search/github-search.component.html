@@ -10,3 +10,12 @@
   (onPagination)="onPagination($event)"
   (onItemCheckBoxCheck)="onItemCheckBoxCheck($event)"
 ></app-results-table>
+
+<div class="selected-items-block">
+  <div class="title">Selected Items:</div>
+  <div class="selected-item" *ngFor="let item of selectedItems">
+    <span class="glyphicon glyphicon-trash" (click)="removeSelectedItem(item)"></span>
+    <span>{{item.fullName}}</span>
+    <span><a [href]="item.url" target="_blank">{{item.url}}</a></span>
+  </div>
+</div>
