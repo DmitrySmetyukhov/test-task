@@ -11,6 +11,8 @@ import {PaginationModule} from 'ngx-bootstrap';
 import {ErrorInterceptor} from '../shared/interceptors/error-interceptor';
 import {ToastrModule} from 'ngx-toastr';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {LocalStorageService} from '../shared/services/local-storage.service';
+import {GithubStoreService} from './services/github-store.service';
 
 @NgModule({
   imports: [
@@ -33,6 +35,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
   providers: [
     GithubApiService,
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+    LocalStorageService,
+    GithubStoreService
   ]
 })
 export class GithubModule {

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {SearchItem, SearchPanelDto, SearchVariants} from '../../models/interfaces';
 import {FormBuilder, FormGroup} from '@angular/forms';
 
@@ -8,6 +8,7 @@ import {FormBuilder, FormGroup} from '@angular/forms';
   styleUrls: ['./search-panel.component.scss']
 })
 export class SearchPanelComponent implements OnInit {
+  @Input('searchState') searchState: SearchPanelDto;
   @Output('onSearch') searchPanelEmitter: EventEmitter<SearchPanelDto> = new EventEmitter();
   public searchItems: SearchItem[] = [
     {id: SearchVariants.byLang, name: 'By language'},
@@ -45,5 +46,10 @@ export class SearchPanelComponent implements OnInit {
     };
 
     this.form = this.fb.group(form);
+
+    if (this.searchState) {
+      this.searchVariant.setValue(this.searchState.variant);
+      this.query.setValue(this.searchState.query);
+    }
   }
 }

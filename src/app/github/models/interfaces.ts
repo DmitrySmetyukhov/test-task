@@ -21,3 +21,11 @@ export interface SearchPanelDto {
   variant: SearchVariants;
   query: string;
 }
+
+export interface GithubModuleState {
+  page: number;
+  total: number;
+  searchState: SearchPanelDto;
+  repositoryItems: RepositoryItem[];
+  selectedItems: RepositoryItem[];
+}

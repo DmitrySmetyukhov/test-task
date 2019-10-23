@@ -1,9 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {SearchPanelDto, RepositoryItem, SearchVariants} from '../models/interfaces';
+import {SearchPanelDto, RepositoryItem, SearchVariants, GithubModuleState} from '../models/interfaces';
 import {GithubApiService} from '../providers/github.api.service';
 import {map} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 import {ToastrService} from 'ngx-toastr';
+import {GithubStoreService} from '../services/github-store.service';
+import {AppConstants} from '../../shared/app-constants';
 
 @Component({
   selector: 'app-github-search',
@@ -13,17 +15,23 @@ import {ToastrService} from 'ngx-toastr';
 export class GithubSearchComponent implements OnInit {
   public repositoryItems: RepositoryItem[] = [];
   public total = 0;
-  private limit = 15;
-  private page = 1;
-  private searchState: SearchPanelDto;
-  private availableResultsNumber = 1000;  // "Only the first 1000 search results are available", "documentation_url": "https://developer.github.com/v3/search/"
+  public searchState: SearchPanelDto;
+  public limit = AppConstants.GIT_SEARCH_LIMIT;
+  public page = 1;
+  private availableResultsNumber = AppConstants.GIT_AVAILABLE_RESULTS_NUMBER;  // "Only the first 1000 search results are available", "documentation_url": "https://developer.github.com/v3/search/"
   private selectedItems: RepositoryItem[] = [];
+  private initializationComplete: boolean;
+  private state: GithubModuleState = <GithubModuleState>{};
 
-  constructor(private githubApi: GithubApiService, private toastr: ToastrService) {
+  constructor(
+    private githubApi: GithubApiService, private toastr: ToastrService,
+    private store: GithubStoreService
+  ) {
 
   }
 
   ngOnInit() {
+    this.restoreState();
   }
 
   public search(searchState: SearchPanelDto) {
@@ -48,16 +56,22 @@ export class GithubSearchComponent implements OnInit {
   }
 
   public onPagination(page: number) {
+    if (!this.initializationComplete) {
+      return;
+    }
     this.page = page;
     this.search(this.searchState);
   }
 
   public onItemCheckBoxCheck(item: RepositoryItem) {
     if (item.checked) {
-      return this.selectedItems.push(item);
+      this.selectedItems.push(item);
+    } else {
+      this.selectedItems = this.selectedItems.filter(i => i.id !== item.id);
     }
 
-    this.selectedItems = this.selectedItems.filter(i => i.id !== item.id);
+    this.state.selectedItems = this.selectedItems;
+    this.store.setState(this.state);
   }
 
 
@@ -73,7 +87,7 @@ export class GithubSearchComponent implements OnInit {
   // *** response processing block
 
   private convertItems = (results: any[]): RepositoryItem[] => {
-    return results.map(item => {
+    const convertedResults = results.map(item => {
       return {
         id: item.id,
         fullName: item.full_name,
@@ -83,6 +97,15 @@ export class GithubSearchComponent implements OnInit {
         checked: false
       };
     });
+
+    convertedResults.forEach(item => {
+      const selectedItem = this.selectedItems.find(i => i.id === item.id);
+      if (selectedItem) {
+        item.checked = selectedItem.checked;
+      }
+    });
+
+    return convertedResults;
   };
 
   private getTotal(response: any) {
@@ -101,9 +124,37 @@ export class GithubSearchComponent implements OnInit {
       }))
       .subscribe((response: any) => {
         this.repositoryItems = this.convertItems(response.items);
-        this.toastr.success('Success!');
+        this.toastr.success(AppConstants.GIT_SUCCESS_MESSAGE);
+
+        this.state = {
+          page: this.page,
+          total: this.total,
+          searchState: this.searchState,
+          repositoryItems: this.repositoryItems,
+          selectedItems: this.selectedItems
+        };
+
+        this.store.setState(this.state);
       });
   }
 
   // *** end response processing block
+
+  private restoreState() {
+    const state = this.store.getState();
+    if (state) {
+      this.state = state;
+      this.page = state.page;
+      this.total = state.total;
+      this.searchState = state.searchState;
+      this.repositoryItems = state.repositoryItems;
+      this.selectedItems = state.selectedItems || [];
+    } else {
+      this.state.selectedItems = this.selectedItems;
+    }
+
+    setTimeout(() => {
+      this.initializationComplete = true;
+    });
+  }
 }
